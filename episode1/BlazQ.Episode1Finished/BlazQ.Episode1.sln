@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazQ.Episode1", "BlazQ.Episode1\BlazQ.Episode1.csproj", "{4490CF43-3774-4AB3-A55D-AF87DB78F8D4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4490CF43-3774-4AB3-A55D-AF87DB78F8D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4490CF43-3774-4AB3-A55D-AF87DB78F8D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4490CF43-3774-4AB3-A55D-AF87DB78F8D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4490CF43-3774-4AB3-A55D-AF87DB78F8D4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D8B2030-59EE-4732-820E-15378068DBA6}
+	EndGlobalSection
+EndGlobal

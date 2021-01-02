@@ -1,0 +1,258 @@
+﻿@page "/"
+
+<div class="controls">
+    <div class="container-fluid py-2">
+        <div class="form-inline row m-0">
+            <label for="duration" class="text-white">Duration</label>
+            <input class="form-control ml-3" id="duration" type="number" @bind-value="Duration" min="1" max="100" />
+            <div class="input-group-append">
+                <div class="input-group-text secondary-group ">seconds</div>
+            </div>
+            <button type="button" class="btn btn-primary ml-3" @onclick="Animate">Start</button>
+            <button type="button" class="btn btn-secondary ml-3" @onclick="() => _showPathMenu = !_showPathMenu">
+                @if (_showPathMenu == false)
+                {
+                    <span>Show Path Menu</span>
+                }
+                else
+                {
+                    <span>Hide Path Menu</span>
+                }
+            </button>
+        </div>
+
+        @if (_showPathMenu == true)
+        {
+            <div class="row mt-3 text-white">
+                <div class="col-md-6 col-sm-12">
+                    <h3>Current Path</h3>
+                    <hr />
+                    <ul class="list-unstyled">
+                        @foreach (var item in _path)
+                        {
+                            <li class="flex-row d-flex" @key="item.Id">
+                                <span>X: @item.X</span>
+                                <span>Y: @item.Y</span>
+                                <span class="d-flex flex-fill"></span>
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    @if (_path.IndexOf(item) != 0)
+                                    {
+                                        <button type="button" class="btn btn-secondary" @onclick="() => MovePathUp(item)">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </button>
+                                    }
+                                    @if (_path.IndexOf(item) != _path.Count - 1)
+                                    {
+                                        <button type="button" class="btn btn-secondary" @onclick="() => MovePathDown(item)">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </button>
+                                    }
+                                    <button type="button" class="btn btn-danger" @onclick="() => RemovePathElement(item)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <h3>Add an Element</h3>
+                    <hr />
+
+                    <EditForm class="" Model="_newPoint" OnValidSubmit="@AddNewPath">
+                        <DataAnnotationsValidator />
+                        <div class="form-group">
+                            <label for="x">X</label>
+                            <InputNumber @bind-Value="_newPoint.X" id="x" type="number" min="0" max="100" class="form-control" placeholder="30" />
+                            <ValidationMessage For="() => _newPoint.X" />
+                        </div>
+                        <div class="form-group">
+                            <label for="x">Y</label>
+                            <InputNumber @bind-Value="_newPoint.Y" id="y" type="number" min="0" max="100" class="form-control" placeholder="60" />
+                            <ValidationMessage For="() => _newPoint.Y" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </EditForm>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+<div class="panel">
+    <img src="blazorlyicon.png" style="@($"left: {_x}%; top: {_y}%" )" />
+</div>
+
+@code  {
+
+    #region Focus here and do your magic
+
+    private Double _x = 50;
+    private Double _y = 50;
+
+    private Boolean _animationInProgress = false;
+
+    private async void Animate()
+    {
+        if (_animationInProgress == true)
+        {
+            return;
+        }
+
+        _animationInProgress = true;
+
+        await MoveLeftToRight();
+        //await MoveRightToLeft();
+
+        //await MoveUpToDown();
+        //await FollowPath();
+
+        _animationInProgress = false;
+    }
+
+    private async Task MoveLeftToRight()
+    {
+        Int32 stepsPerSeconds = 30;
+
+        Int32 totalSteps = stepsPerSeconds * Duration;
+
+        Double delta = 100.0 / totalSteps;
+
+        _x = 0;
+        _y = 30;
+
+        for (int i = 0; i < totalSteps; i++)
+        {
+            _x = _x + delta;
+            await Task.Delay(1000 / stepsPerSeconds);
+            StateHasChanged();
+        }
+    }
+
+    private async Task MoveRightToLeft()
+    {
+        Int32 stepsPerSeconds = 30;
+        Int32 totalSteps = stepsPerSeconds * Duration;
+
+        Double delta = 100.0 / totalSteps;
+
+        _x = 100;
+        _y = 30;
+
+        for (int i = 0; i < totalSteps; i++)
+        {
+            _x = _x - delta;
+            await Task.Delay(1000 / stepsPerSeconds);
+            StateHasChanged();
+        }
+    }
+
+
+    private async Task MoveUpToDown()
+    {
+        Int32 stepsPerSeconds = 30;
+        Int32 totalSteps = stepsPerSeconds * Duration;
+
+        Double delta = 100.0 / totalSteps;
+
+        _x = 30;
+        _y = 0;
+
+        for (int i = 0; i < totalSteps; i++)
+        {
+            _y = _y + delta;
+            await Task.Delay(1000 / stepsPerSeconds);
+            StateHasChanged();
+        }
+    }
+
+    private async Task FollowPath()
+    {
+        Int32 stepsPerSeconds = 30;
+        Int32 totalSteps = stepsPerSeconds * Duration;
+
+        Int32 stepsPerPath = totalSteps / (_path.Count - 1);
+
+        _x = 0;
+        _y = 0;
+        StateHasChanged();
+
+        for (int pathIndex = 0; pathIndex < _path.Count - 1; pathIndex++)
+        {
+            SimplePathPoint currentPoint = _path[pathIndex];
+            SimplePathPoint nextPoint = _path[pathIndex + 1];
+
+            Double directionX = nextPoint.X - currentPoint.X;
+            Double directionY = nextPoint.Y - currentPoint.Y;
+
+            Double deltaX = directionX / stepsPerPath;
+            Double deltaY = directionY / stepsPerPath;
+
+            for (int i = 0; i < stepsPerPath; i++)
+            {
+                _x = _x + deltaX;
+                _y = _y + deltaY;
+                StateHasChanged();
+                await Task.Delay(1000 / stepsPerSeconds);
+            }
+        }
+    }
+
+    [Parameter]
+    public Int32 Duration { get; set; } = 5;
+
+    #endregion
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+    }
+
+    #region Path
+
+    private Boolean _showPathMenu = false;
+    private List<SimplePathPoint> _path = new List<SimplePathPoint>
+{
+        new SimplePathPoint { X = 0, Y = 0, },
+        new SimplePathPoint { X = 25, Y = 100, },
+        new SimplePathPoint { X = 50, Y = 0, },
+        new SimplePathPoint { X = 75, Y = 100, },
+        new SimplePathPoint { X = 100, Y = 0, },
+    };
+
+    private SimplePathPoint _newPoint = new();
+
+    private void AddNewPath()
+    {
+        _path.Add(new SimplePathPoint { X = _newPoint.X, Y = _newPoint.Y });
+        _newPoint = new();
+    }
+
+    private void RemovePathElement(SimplePathPoint point)
+    {
+        _path.Remove(point);
+    }
+
+    private void MovePathUp(SimplePathPoint point)
+    {
+        Int32 index = _path.IndexOf(point);
+        if (index > 0)
+        {
+            _path.RemoveAt(index);
+            _path.Insert(index - 1, point);
+        }
+    }
+
+    private void MovePathDown(SimplePathPoint point)
+    {
+        Int32 index = _path.IndexOf(point);
+        if (index < _path.Count - 1)
+        {
+            _path.RemoveAt(index);
+            _path.Insert(index + 1, point);
+        }
+    }
+
+    #endregion
+}

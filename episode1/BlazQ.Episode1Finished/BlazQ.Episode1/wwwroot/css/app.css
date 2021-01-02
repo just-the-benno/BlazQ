@@ -1,0 +1,83 @@
+﻿
+html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    height: 100%;
+}
+
+app {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.controls {
+    display: flex;
+    flex: 0 0 auto;
+    background-color: #7351C5;
+    width: 100%;
+}
+
+.panel {
+    flex: 1 1 auto;
+    margin-right: 174.462px;
+    padding-bottom: 250px;
+}
+
+.panel img {
+    height: 250px;
+    width: auto;
+    position: relative;
+}
+
+.validation-message {
+    color: red;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+@media (min-width: 768px) {
+    app {
+        flex-direction: row;
+    }
+}
+
+.secondary-group {
+    background: #7E77D2;
+    color: white;
+}
+
+.btn-primary {
+    color:black;
+    background-color: white;
+    border-color: white;
+}
+
+
+hr {
+   border-top: 1px solid white;
+}
