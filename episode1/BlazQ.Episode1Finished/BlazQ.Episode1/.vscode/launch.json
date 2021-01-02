@@ -8,7 +8,8 @@
             "name": "Launch and Debug",
             "type": "blazorwasm",
             "request": "launch",
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "url": "http://localhost:5000"
         }
     ]
 }
