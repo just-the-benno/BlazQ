@@ -32,12 +32,12 @@ Unlike other formats, live coding - as the name suggested - is an **event** stre
 
 BlazQ is streamed via Twitch and Youtube on **every Thursday at 8 pm PST**. The first episodes air on 21st January 2021. 
 
-+ [Twitch]()
-+ [Youtube]()
++ [Twitch](https://www.twitch.tv/justthebenno)
++ [Youtube](https://www.youtube.com/channel/UC3Z_Q1Djiw9y3jAgEI_VZBw)
 
-### Recondings
+### Recordings
 
-I'd think the most value regarding the learning outcome is in the interactive sessions. However, not everyone can attend every time, and sometimes rehearing the same things again supports understanding. A couple of hours (at most a day) after the sessions has finished, you find the episodes uploaded on the [Youtube channel]().   
+I'd think the most value regarding the learning outcome is in the interactive sessions. However, not everyone can attend every time, and sometimes rehearing the same things again supports understanding. A couple of hours (at most a day) after the sessions has finished, you find the episodes uploaded on the [Youtube channel](https://www.youtube.com/channel/UC3Z_Q1Djiw9y3jAgEI_VZBw).   
 
 ## List of episode
 
