@@ -2,6 +2,8 @@
 
 BlazQ is a series of live coding events helping beginners get a free, comprehensive, and fun way into software development. It's an excellent way to learn coding with C# and .NET and discover if you are serious about being a developer.  This course develops a not so serious quiz game that evolves from a single local player to coach coop and, finally, a real-time online multiplayer. We leverage modern web technologies like Blazor and compelling backend technologies combined with the Azure cloud's power to create a learning experience that let you see and feel, that even complicated task like a multiplayer game is in the reach of a beginner. 
 
+![Meet Blazorly, the quiz master](media/blazorly-small.png)
+
 ## Learn coding with C# and .NET
 
 Software development is about changing the world positively. As a developer, we are gifted to improve lives. It might be such a small change as reducing the number of clicks it takes to complete an operation, removing the burden to execute tedious manual tasks, or empowering new business and lifestyle models. Everyone should feel this empowerment. Learning to code is the way to accomplish it. 
@@ -69,6 +71,8 @@ BlazQ is a quiz game. The questions are created by yourself. Hence, you can be v
 
 The game is **not intended to be serious**. It should make you smile and give you a good feeling when others are playing and enjoying it. The purpose of the game is to support us in learning the matter. There is no benefit in creating just another boring game.   
 
+![A sketch highlighting some features of BlazQ](media/blazq-game-screen-small.png)
+
 
 ## What it takes to be a software developer
 
@@ -76,7 +80,7 @@ You don't need to have prior knowledge to understanding and enjoying this course
 
 ### A growing mindset
 
-[The theory of a growing (versus a fixed mindset) by Carol Dweck]() is, in my view,  one of the most influential publications in education in the recent two decades. In a nutshell: The learning outcome largely depends on the attitude of the learners. If a learner believes that not talent but dedication and practice lead to a learning outcome, this person is more likely to achieve it than someone who thinks talents are most crucial. 
+[The theory of a growing (versus a fixed mindset) by Carol Dweck](https://www.amazon.com/exec/obidos/ASIN/0345472322/braipick-20) is, in my view,  one of the most influential publications in education in the recent two decades. In a nutshell: The learning outcome largely depends on the attitude of the learners. If a learner believes that not talent but dedication and practice lead to a learning outcome, this person is more likely to achieve it than someone who thinks talents are most crucial. 
 
 So, the first step towards becoming a software developer is accepting that it is not a magic path, there is no "talent" or way of thinking needed to accomplish it, but there is a learning path. And learning takes time.        
 
