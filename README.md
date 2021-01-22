@@ -1,6 +1,6 @@
 # BlazQ 
 
-BlazQ is a series of live coding events helping beginners get a free, comprehensive, and fun way into software development. It's an excellent way to learn coding with C# and .NET and discover if you are serious about being a developer.  This course develops a not so serious quiz game that evolves from a single local player to coach coop and, finally, a real-time online multiplayer. We leverage modern web technologies like Blazor and compelling backend technologies combined with the Azure cloud's power to create a learning experience that let you see and feel, that even complicated task like a multiplayer game is in the reach of a beginner. 
+BlazQ is a series of live coding events helping beginners get a free, comprehensive, and fun way into software development. It's an excellent way to learn coding with C# and .NET and discover if you are serious about being a developer.  This course develops a not so serious quiz game that evolves from a single local player to couch coop and, finally, a real-time online multiplayer. We leverage modern web technologies like Blazor and compelling backend technologies combined with the Azure cloud's power to create a learning experience that let you see and feel, that even complicated task like a multiplayer game is in the reach of a beginner. 
 
 ![Meet Blazorly, the quiz master](media/blazorly-small.png)
 
@@ -52,7 +52,7 @@ Keep in mind that BlazQ is a work and progress and highly feedback-driven. The l
 1. \[Intro] The basics: Prepare the development environment and write your first logic
 2. Building the shell of BlazQ: Start your first project and build the foundation for BlazQ single player mode
 3. Prettifying BlazQ: Implementing the design
-4. Coach Coop: Adding multiple players that can play locally
+4. Couch Coop: Adding multiple players that can play locally
 5. Uprising of the Jokers: Add more elements to the game
 6. Go live: Finishing touches and deploy the application so that everyone in the world can use it
 7. Be seated in the lobby: FIrst step in the multiplayer domain
