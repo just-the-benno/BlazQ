@@ -1,6 +1,6 @@
 # Episode 01 - Move it!
 
-> The episode will air on Thursday, 21st January 2021, at 8 pm PST. Participate live on [Twitch](https://www.twitch.tv/justthebenno)
+> Thanks for being with me in the first episode. I was not alone. :simle: 
 
 ## Content
 
@@ -53,7 +53,7 @@ If you didn't enjoy the experience, think about the why and feel free to send me
 ## Media
 
 + [Slides](media/slides-episode-1.pdf)
-+ Recorded session (not yet available) 
++ [Recorded session on YouTube](https://youtu.be/7OFHzryUOIQ) 
 + [Setup on Windows](setup-windows.md)
 + [Setup on macOS](setup-macos.md)
 + [Setup on Linux](setup-linux.md)

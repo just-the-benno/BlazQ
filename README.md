@@ -35,7 +35,7 @@ Unlike other formats, live coding - as the name suggested - is an **event** stre
 BlazQ is streamed via Twitch and Youtube on **every Thursday at 8 pm PST**. The first episodes air on 21st January 2021. 
 
 + [Twitch](https://www.twitch.tv/justthebenno)
-+ [Youtube](https://www.youtube.com/channel/UC3Z_Q1Djiw9y3jAgEI_VZBw)
++ [Youtube](https://www.youtube.com/channel/UCwmqZGeSB5MrWHlw83zNhpw)
 
 ### Recordings
 
@@ -43,13 +43,14 @@ I'd think the most value regarding the learning outcome is in the interactive se
 
 ## List of episode
 
-The first episode will air on **every Thursday at 8 pm PST**.
+Episodes will air on every **Thursday at 8 pm PST**.
+
+1. [\[Intro] The basics: Prepare the development environment and write your first logic](https://youtu.be/7OFHzryUOIQ)
 
 ### Upcoming episodes
 
 Keep in mind that BlazQ is a work and progress and highly feedback-driven. The list of the planned episodes, it's very likely to change over time. I'll keep the list updated and edited it after reviewing the latest episode. 
 
-1. \[Intro] The basics: Prepare the development environment and write your first logic
 2. Building the shell of BlazQ: Start your first project and build the foundation for BlazQ single player mode
 3. Prettifying BlazQ: Implementing the design
 4. Couch Coop: Adding multiple players that can play locally

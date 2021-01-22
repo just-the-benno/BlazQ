@@ -102,6 +102,9 @@
 
         _animationInProgress = true;
 
+        // During the live session, I didn't create separte methods for each tasks
+        // think about it, as the entire content of FollowPath() is copied here
+
         //await MoveLeftToRight();
         //await MoveRightToLeft();
 
@@ -174,8 +177,8 @@
 
         Int32 stepsPerPath = totalSteps / (_path.Count - 1);
 
-        _x = 0;
-        _y = 0;
+        _x = _path[0].X;
+        _y = _path[0].Y;
         StateHasChanged();
 
         for (int pathIndex = 0; pathIndex < _path.Count - 1; pathIndex++)
