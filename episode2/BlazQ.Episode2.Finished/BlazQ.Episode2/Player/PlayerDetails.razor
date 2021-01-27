@@ -1,0 +1,82 @@
+﻿@page "/"
+
+@inject NavigationManager navManager
+@inject GameStateService gameStateService
+
+
+<div class="container">
+    <h1 class="my-3">Welcome to BlazQ <small> the new quiz in town</small></h1>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="card background-light-purple text-white">
+                <div class="card-header background-dark-purple">
+                    Create your profile
+                </div>
+                <div class="card-body text-white">
+                    <EditForm @ref="_form" Model="_model" OnValidSubmit="StartQuiz">
+                        <DataAnnotationsValidator />
+                        <div class="form-group">
+                            <label for="name">Your name</label>
+                            <InputText type="text" class="form-control" id="name" placeholder="know-it-all78" @bind-Value="_model.Name" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="avatar">Select your avatar/cat</label>
+                            <InputSelect @bind-Value="_model.AvatarUrl" class="form-control" id="avatar">
+                                <option value="">--- Not selected ---</option>
+                                @foreach (var avatar in _possibleAvatars)
+                                {
+                                    <option value="@avatar.Url">@avatar.Name</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary background-turquois" disabled="@(_form.EditContext.Validate() == false)">Start!!!</button>
+
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="card background-light-purple text-white mt-3 mt-md-0">
+                <div class="card-header background-turquois">
+                    Your Player Card
+                </div>
+                @if (String.IsNullOrEmpty(_model.AvatarUrl) == false)
+                {
+                    <img class="card-img-top" src="@_model.AvatarUrl" alt="Card image" style="max-height:300px">
+                }
+
+                <div class="card-body">
+                    <p class="card-text">
+                        Name: <strong>@_model.Name</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private PlayerViewModel _model = new PlayerViewModel();
+
+    private EditForm _form;
+
+    private List<AvatarViewModel> _possibleAvatars = new List<AvatarViewModel>
+{
+        new AvatarViewModel { Name = "A cat", Url = "https://theoldreader.com/kittens/files/images/53133240@N00-5255106920/600x400.jpg" },
+        new AvatarViewModel { Name = "Another cat", Url = "https://theoldreader.com/kittens/files/images/33423611@N00-6643985985/600x400.jpg" },
+        new AvatarViewModel { Name = "Cat, cat, cat", Url = "https://theoldreader.com/kittens/files/images/27718315@N02-49627790451/600x400.jpg" },
+        new AvatarViewModel { Name = "Blazorly", Url = "/blazorlyicon.png" },
+
+    };
+
+    private void StartQuiz()
+    {
+        gameStateService.Session = new Game.GameSession(_model);
+        navManager.NavigateTo("/Game");
+    }
+
+}

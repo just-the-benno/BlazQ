@@ -1,0 +1,61 @@
+﻿@page "/Result"
+@inject GameStateService _gameStateService
+@inject NavigationManager _navManager
+
+@if (_session != null)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="card background-light-purple text-white d-flex align-items-center flex-column">
+                    <img class="card-img-top" src="/blazorlyicon.png" alt="Card image" style="max-width:350px">
+                    <div class="card-body text-white">
+                        <button type="button" class="btn btn-primary background-turquois" @onclick="StartANewGame">Try it again</button>
+                        <button type="button" class="btn btn-secondary" @onclick="ResetGame">Play as another player</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="card background-light-purple text-white mt-3 mt-md-0">
+                    <div class="card-header background-turquois">
+                        Your Results: @_session.Player.Name
+                    </div>
+                    <img class="card-img-top" src="@_session.Player.AvatarUrl" alt="Card image" style="max-height:300px">
+                    <div class="card-body">
+                        <div class="card-text">
+                         
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    private GameSession _session;
+
+    protected override void OnInitialized()
+    {
+        _session = _gameStateService.Session;
+        if (_session == null)
+        {
+            _navManager.NavigateTo("/");
+        }
+
+        base.OnInitialized();
+    }
+
+    private void ResetGame()
+    {
+        _gameStateService.Session = null;
+        _navManager.NavigateTo("/");
+    }
+
+    private void StartANewGame()
+    {
+        _gameStateService.Session.Restart();
+        _navManager.NavigateTo("/Game");
+    }
+}

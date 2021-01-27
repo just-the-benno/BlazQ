@@ -1,0 +1,131 @@
+﻿@page "/Game"
+@inject GameStateService _gameStateService
+@inject NavigationManager _navManager;
+
+@if (_session != null)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="card background-light-purple text-white">
+                    <div class="card-header background-dark-purple">
+                        Question @(_session.QuestionIndex + 1): @_session.GetCurrentQuestion().Text
+                    </div>
+                    <div class="card-body">
+                        <EditForm EditContext="_context" OnSubmit="RevealAnswer">
+
+                            <InputRadioGroup @bind-Value="_currentAnswer.OptionIndex">
+
+                                @{ Int32 optionIndex = 0;}
+                                @foreach (var item in _session.GetCurrentQuestion().Options)
+                                    {
+                                    <div class="@AddCssClassForSelected("form-check my-2",optionIndex)">
+                                        <InputRadio Value="optionIndex" id="@optionIndex" class="form-check-input" disabled="@(_showAnswers == true)" />
+                                        <label class="form-check-label" for="@optionIndex">
+                                            @item
+                                        </label>
+
+                                        @{ optionIndex++; }
+                                    </div>
+                                    }
+
+                            </InputRadioGroup>
+
+                            @if (_showAnswers == false)
+                            {
+                                <button type="submit" class="btn btn-primary background-turquois" disabled="@(_currentAnswer.OptionIndex.HasValue == false)">Answer</button>
+                            }
+                            else
+                            {
+                                <button type="button" @onclick="GoToNextQuestion" class="btn btn-primary background-turquois">Next</button>
+                            }
+
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+
+                <div class="card background-light-purple text-white mt-3 mt-md-0">
+                    <div class="card-header background-turquois">
+                        Your Player Card
+                    </div>
+                    <img class="card-img-top" src="@_session.Player.AvatarUrl" alt="Card image" style="max-height:300px">
+                    <div class="card-body">
+                        <p class="card-text">
+                            Name: <strong>@_session.Player.Name</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    private GameSession _session;
+    private Boolean _showAnswers;
+
+    private AnswerViewModel _currentAnswer;
+    private EditContext _context;
+
+    private String AddCssClassForSelected(String baseClass, Int32 optionIndex)
+    {
+        if (_showAnswers == true && optionIndex == _session.GetCurrentQuestion().CorrectOptionIndex)
+        {
+            return baseClass + " correct-option";
+        }
+        else
+        {
+            if (optionIndex == _currentAnswer.OptionIndex)
+            {
+                return baseClass + " option-selected";
+            }
+            else
+            {
+                return baseClass;
+            }
+        }
+    }
+
+    private void PrepareForQuestion()
+    {
+        _currentAnswer = new AnswerViewModel();
+        _context = new EditContext(_currentAnswer);
+        _context.SetFieldCssClassProvider(new EmptyFieldCssClassProvider());
+
+        _showAnswers = false;
+    }
+
+    protected override void OnInitialized()
+    {
+        PrepareForQuestion();
+
+        _session = _gameStateService.Session;
+        if (_session == null)
+        {
+            _navManager.NavigateTo("/");
+        }
+
+        base.OnInitialized();
+    }
+
+    private void RevealAnswer()
+    {
+        _showAnswers = true;
+    }
+
+    private void GoToNextQuestion()
+    {
+        Boolean questionsLeft = _session.MoveToNextQuestion();
+        if (questionsLeft == true)
+        {
+            PrepareForQuestion();
+        }
+        else
+        {
+            _navManager.NavigateTo("/Result");
+        }
+    }
+}
