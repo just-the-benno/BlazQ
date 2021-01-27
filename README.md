@@ -41,11 +41,11 @@ BlazQ is streamed via Twitch and Youtube on **every Thursday at 8 pm PST**. The 
 
 I'd think the most value regarding the learning outcome is in the interactive sessions. However, not everyone can attend every time, and sometimes rehearing the same things again supports understanding. A couple of hours (at most a day) after the sessions has finished, you find the episodes uploaded on the [Youtube channel](https://www.youtube.com/channel/UC3Z_Q1Djiw9y3jAgEI_VZBw).   
 
-## List of episode
+## List of episodes
 
 Episodes will air on every **Thursday at 8 pm PST**.
 
-1. [\[Intro] The basics: Prepare the development environment and write your first logic](https://youtu.be/7OFHzryUOIQ)
+1.  [(Intro) The basics: Prepare the development environment and write your first logic](https://youtu.be/7OFHzryUOIQ)
 
 ### Upcoming episodes
 
