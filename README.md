@@ -46,12 +46,12 @@ I'd think the most value regarding the learning outcome is in the interactive se
 Episodes will air on every **Thursday at 8 pm PST**.
 
 1.  [(Intro) The basics: Prepare the development environment and write your first logic](https://youtu.be/7OFHzryUOIQ)
+2. [Building the shell of BlazQ: Start your first project and build the foundation for BlazQ single player mode](https://youtu.be/ioQhauIIyp0)
 
 ### Upcoming episodes
 
 Keep in mind that BlazQ is a work and progress and highly feedback-driven. The list of the planned episodes, it's very likely to change over time. I'll keep the list updated and edited it after reviewing the latest episode. 
 
-2. Building the shell of BlazQ: Start your first project and build the foundation for BlazQ single player mode
 3. Prettifying BlazQ: Implementing the design
 4. Couch Coop: Adding multiple players that can play locally
 5. Uprising of the Jokers: Add more elements to the game
