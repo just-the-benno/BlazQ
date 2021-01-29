@@ -1,15 +1,17 @@
-html, body {
+html,
+body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-a, .btn-link {
+a,
+.btn-link {
     color: #0366d6;
 }
 
 .btn-primary {
-    color: #fff;
+    color           : #fff;
     background-color: #1b6ec2;
-    border-color: #1861ac;
+    border-color    : #1861ac;
 }
 
 .content {
@@ -30,37 +32,37 @@ a, .btn-link {
 
 #blazor-error-ui {
     background: lightyellow;
-    bottom: 0;
+    bottom    : 0;
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
-    display: none;
-    left: 0;
-    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
+    display   : none;
+    left      : 0;
+    padding   : 0.6rem 1.25rem 0.7rem 1.25rem;
+    position  : fixed;
+    width     : 100%;
+    z-index   : 1000;
 }
 
 #blazor-error-ui .dismiss {
-    cursor: pointer;
+    cursor  : pointer;
     position: absolute;
-    right: 0.75rem;
-    top: 0.5rem;
+    right   : 0.75rem;
+    top     : 0.5rem;
 }
 
 /* Custom BlazQ styles */
 
-.form-check-input:disabled ~ .form-check-label {
+.form-check-input:disabled~.form-check-label {
     color: #999999;
 }
 
 .option-selected {
     background-color: white;
-    color: black;
+    color           : black;
 }
 
 .correct-option {
     background-color: #82d282;
-    color: white;
+    color           : white;
 }
 
 .background-turquois {
