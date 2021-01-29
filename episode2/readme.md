@@ -1,6 +1,6 @@
 # Episode 02 - Building the shell
 
-The episode will air on Thursday, 28 Jan, 8 PM PST at [Twitch](https://www.twitch.tv/justthebenno).
+> Thanks for being with me in the second episode. I had a lot of fun and loved your engagement. 
 
 Watch the teaser on [Youtube](https://youtu.be/EhEwoFpNqnE). 
 
@@ -140,4 +140,4 @@ If you didn't enjoy the experience, think about the why and feel free to send me
 ## Media
 
 + [Slides](media/slides-episode-02.pdf)
-+ Recorded session on YouTube (not yet available)
++ [Recorded session on YouTube](https://youtu.be/ioQhauIIyp0)
