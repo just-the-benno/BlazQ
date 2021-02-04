@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "BlazQ.Episode2": {
+    "BlazQ.Episode3": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

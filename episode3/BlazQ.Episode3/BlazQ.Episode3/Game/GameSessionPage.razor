@@ -1,0 +1,120 @@
+@page "/Game"
+@inject NavigationManager navManager
+
+@inject GameSessionState state
+<h1> Game has started </h1>
+
+@if (state.Session != null)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        Question @(_session.QuestionIndex+1): @_session.GetCurrentQuestion().Text
+                    </div>
+                    <div class="card-body">
+                        <EditForm Model="_currentAnswer" OnValidSubmit="RevealAnswer">
+                            @{
+                                Int32 optionIndex = 0;
+                            }
+                            <InputRadioGroup @bind-Value="_currentAnswer.ChoosenIndex">
+                                @foreach (String option in _session.GetCurrentQuestion().Options)
+                                {
+                                <div class="form-check @SetOptionBackground(optionIndex)">
+                                    <InputRadio Value="optionIndex" class="form-check-input" id="@optionIndex" />
+                                    <label class="form-check-label" for="@optionIndex">
+                                        @option
+                                    </label>
+                                </div>
+                                    optionIndex++;
+                                }
+                        </InputRadioGroup>
+                        @if (_showAnswers == false)
+                            {
+                                <button type="submit" class="btn btn-primary">Answer</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-primary" @onclick="MoveToNextQuestion">Next Question
+                                </button>
+                            }
+                        </EditForm>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        Your profile
+                    </div>
+                    <img src="@_session.Player.AvatarUrl" class="card-img-top" alt="...">
+
+                    <div class="card-body">
+                        <span> Hi @_session.Player.Name </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code
+{
+    private GameSession _session;
+    private AnswerViewModel _currentAnswer = new AnswerViewModel();
+    protected override void OnInitialized()
+    {
+        if (state.Session == null)
+        {
+            navManager.NavigateTo("/");
+            return;
+        }
+        else
+        {
+            _session = state.Session;
+        }
+
+        base.OnInitialized();
+    }
+
+    private Boolean _showAnswers = false;
+
+    private String SetOptionBackground(Int32 option)
+    {
+        if (_showAnswers == false)
+        {
+            return String.Empty;
+        }
+
+        if (option == _session.GetCurrentQuestion().CorrectOptionIndex)
+        {
+            return "correct-option";
+        }
+        else
+        {
+            return String.Empty;
+        }
+    }
+
+    private void RevealAnswer()
+    {
+        _showAnswers = true;
+    }
+
+    private void MoveToNextQuestion()
+    {
+        Boolean isThereAnotherQuestion = _session.MoveToNextQuestion();
+        if (isThereAnotherQuestion == true)
+        {
+            _currentAnswer = new AnswerViewModel();
+            _showAnswers = false;
+        }
+        else
+        {
+            navManager.NavigateTo("/Results");
+        }
+    }
+}

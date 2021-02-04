@@ -1,0 +1,66 @@
+@page "/Results"
+@using Game
+@inject NavigationManager navManager
+@inject GameSessionState state
+<h1> Game has finished </h1>
+
+@if (state.Session != null)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+               <div class="card d-flex align-items-center flex-column">
+                    <img class="card-img-top" src="/blazorlyicon.png" alt="Card image" style="max-width:350px">
+                    <div class="card-body">
+                        <button type="button" class="btn btn-primary" @onclick="RestartSession" >Try it again</button>
+                        <button type="button" class="btn btn-secondary" @onclick="RestartGame"  >Play as another player</button>
+                    </div>
+               </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        Your profile
+                    </div>
+                    <img src="@_session.Player.AvatarUrl" class="card-img-top" alt="...">
+
+                    <div class="card-body">
+                        <span> Hi @_session.Player.Name </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code
+{
+    private GameSession _session;
+    protected override void OnInitialized()
+    {
+        if (state.Session == null)
+        {
+            navManager.NavigateTo("/");
+            return;
+        }
+        else
+        {
+            _session = state.Session;
+        }
+
+        base.OnInitialized();
+    }
+
+    private void RestartSession()
+    {
+        _session.Restart();
+        navManager.NavigateTo("/Game");
+    }
+
+    private void RestartGame()
+    {
+        state.Session = null;
+        navManager.NavigateTo("/");
+    }
+}

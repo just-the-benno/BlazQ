@@ -1,0 +1,98 @@
+@page "/Results"
+@using Game
+@inject NavigationManager navManager
+@inject GameSessionState state
+
+@if (state.Session != null)
+{
+    <div class="d-flex flex-fill flex-column full-height">
+        <Header>
+            <h1 class="text-md-left"> &#127881; Congrats &#127874; </h1>
+            <div class="d-flex flex-row justify-content-center justify-content-md-start">
+                <div class="mr-3">
+                    <p><span class="text-success"> &#10004; </span> @_session.Report.CorrectAnswers </p>
+                    <p><span class="text-danger"> &#10006; </span> @_session.Report.WrongAnswers </p>
+                </div>
+                <div class="d-flex flex-column justify-content-center" style="width: 150px">
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: @_session.Report.CorrectPercentage%" aria-valuenow="25"
+                            aria-valuemin="0" aria-valuemax="100">@_session.Report.CorrectPercentage%</div>
+                    </div>
+                </div>
+            </div>
+
+        </Header>
+        <ContentContainer>
+            <Card>
+                <ChildContent>
+                    <div class="d-flex flex-fill flex-row justify-content-center mb-3">
+                        <PlayerAvatarImage Url="@_session.Player.AvatarUrl" />
+                    </div>
+                    @{
+                     Dictionary<String,String> values = new   Dictionary<string, string>
+                         {
+                             { "Questions", _session.Report.TotalQuestions.ToString() },
+                             { "Correct", _session.Report.CorrectAnswers.ToString() },
+                             { "Wrong", _session.Report.WrongAnswers.ToString() },
+                             { "Duraton", _session.Report.Duration.ToString(@"mm\:ss") },
+                         };
+
+                    }
+
+                    <dl class="row">
+                        @foreach (var item in values)
+                        {
+                            <dt class="col-6 col-md-3">@item.Key</dt>
+                            <dd class="col-6 col-md-9">@item.Value</dd>
+                        }
+                    </dl>
+
+                </ChildContent>
+                <HeaderContent>
+                    Your result
+                </HeaderContent>
+            </Card>
+
+        </ContentContainer>
+
+        <Footer Player="_session.Player">
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-turquois" @onclick="RestartSession">Try it again</button>
+                <button type="button" class="btn btn-secondary" @onclick="RestartGame">Play as another
+                    player</button>
+            </div>
+        </Footer>
+    </div>
+}
+
+
+@code
+{
+    private GameSession _session;
+    protected override void OnInitialized()
+    {
+        if (state.Session == null)
+        {
+            navManager.NavigateTo("/");
+            return;
+        }
+        else
+        {
+            _session = state.Session;
+        }
+
+        base.OnInitialized();
+    }
+
+    private void RestartSession()
+    {
+        _session.Restart();
+        navManager.NavigateTo("/Game");
+    }
+
+    private void RestartGame()
+    {
+        state.Session = null;
+        navManager.NavigateTo("/");
+    }
+}

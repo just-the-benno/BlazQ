@@ -1,0 +1,84 @@
+@page "/"
+@using Game
+@inject NavigationManager navManager
+@inject GameSessionState state
+
+<h1>Welcome to BlazQ <small>The new quiz in town</small></h1>
+
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header">
+          Create your profile
+        </div>
+        <div class="card-body">
+          <EditForm Model="_model" OnValidSubmit="StartAGame">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+              <label for="name">You Playername</label>
+              <InputText @bind-Value="_model.Name" class="form-control" id="name" />
+              <ValidationMessage For="@(() => _model.Name)" />
+            </div>
+            <div class="form-group">
+              <label for="avatar">Choose your Avatar</label>
+              <InputSelect @bind-Value="_model.AvatarUrl" class="form-control" id="Example">
+                @foreach (AvatarViewModel avatar in _possibleAvatars)
+                {
+                          <option value="@avatar.Url">@avatar.Name</option>
+                }
+                      </InputSelect>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Start Game</button>
+                  </EditForm>
+                </div>
+              </div>
+            
+            
+            </div>
+            <div class="col-6">
+              <div class="card">
+                <div class="card-header">
+                  Your profile
+                </div>
+                @if(String.IsNullOrEmpty(_model.AvatarUrl) == false)
+                {
+                  <img src="@_model.AvatarUrl" class="card-img-top" alt="...">
+                }
+               
+                <div class="card-body">
+                  <span> Hi @_model.Name </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+        @code {
+  private PlayerViewModel _model = new PlayerViewModel();
+
+  private List<AvatarViewModel> _possibleAvatars = new List<AvatarViewModel>
+{
+new AvatarViewModel { Name = "A cat", Url =
+"https://theoldreader.com/kittens/files/images/53133240@N00-5255106920/600x400.jpg" },
+new AvatarViewModel { Name = "Another cat", Url =
+"https://theoldreader.com/kittens/files/images/33423611@N00-6643985985/600x400.jpg" },
+new AvatarViewModel { Name = "Cat, cat, cat", Url =
+"https://theoldreader.com/kittens/files/images/27718315@N02-49627790451/600x400.jpg" },
+new AvatarViewModel { Name = "Blazorly", Url = "/blazorlyicon.png" },
+new AvatarViewModel { Name = "A better cat", Url =
+"https://theoldreader.com/kittens/files/images/27718315@N02-49627790451/600x400.jpg" },
+};
+
+ private void StartAGame()
+ {
+    GameSession session = new GameSession(_model);
+
+    state.Session = session;
+    navManager.NavigateTo("/Game");
+ }
+
+}

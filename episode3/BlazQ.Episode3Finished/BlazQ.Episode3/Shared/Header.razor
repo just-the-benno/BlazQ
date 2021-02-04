@@ -1,0 +1,26 @@
+<div class="flex-min flex-column">
+    <div class="upper-header">
+    </div>
+    <div class="header-content">
+        <div class="row">
+            <div class="col-sm-12 col-md-4 d-flex align-items-center justify-content-center">
+                <img class="img-fluid" src="blazorlyicon.png" style="height: 150px;">
+            </div>
+            <div class="col-sm-12 col-md-8  text-center">
+                @ChildContent
+            </div>
+        </div>
+    </div>
+    <div class="lower-header-container">
+        <div class="lower-header-background"></div>
+        <div class="lower-header-clock-container">
+            @* <div class="lower-header-clock"></div> *@
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}

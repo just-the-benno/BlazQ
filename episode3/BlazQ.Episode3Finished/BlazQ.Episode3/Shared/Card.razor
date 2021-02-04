@@ -1,0 +1,17 @@
+<div class="card background-light-purple text-white">
+    <div class="card-header background-dark-purple">
+        @HeaderContent
+    </div>
+    <div class="card-body text-white">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment HeaderContent { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}
