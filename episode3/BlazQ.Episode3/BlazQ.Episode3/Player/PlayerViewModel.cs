@@ -9,7 +9,6 @@ namespace BlazQ.Player
         public string Name { get; set; }
         
         [Required]
-        [Url]
         public string AvatarUrl { get; set; }
     }
 }

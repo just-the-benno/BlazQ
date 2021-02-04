@@ -19,7 +19,7 @@ namespace BlazQ.Game
 
         public PlayerViewModel Player { get; init; }
 
-        public GameSessionResultViewModel Report {get; private set;}
+        public GameSessionResultViewModel Report { get; private set; }
 
         private DateTime _start;
 
@@ -28,12 +28,18 @@ namespace BlazQ.Game
         public GameSession(PlayerViewModel player)
         {
             Player = player;
+            InitAnswerTracker();
+
+            _start = DateTime.Now;
+        }
+
+        private void InitAnswerTracker()
+        {
+            _answerTracker.Clear();
             for (int i = 0; i < Questions.Count; i++)
             {
                 _answerTracker.Add(i, false);
             }
-
-            _start = DateTime.Now;
         }
 
         public void SubmitAnswer(Int32 choosenIndex)
@@ -55,7 +61,7 @@ namespace BlazQ.Game
                 return true;
             }
 
-            if(Report == null)
+            if (Report == null)
             {
                 Report = new GameSessionResultViewModel
                 {
@@ -72,7 +78,7 @@ namespace BlazQ.Game
         public void Restart()
         {
             QuestionIndex = 0;
-            _answerTracker.Clear();
+            InitAnswerTracker();
         }
 
         public Boolean AnswerWasCorrect(Int32 questionIndex)

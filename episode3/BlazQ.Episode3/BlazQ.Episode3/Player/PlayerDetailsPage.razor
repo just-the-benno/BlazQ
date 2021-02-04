@@ -58,27 +58,25 @@
 
 
         @code {
-  private PlayerViewModel _model = new PlayerViewModel();
+            private PlayerViewModel _model = new PlayerViewModel();
 
-  private List<AvatarViewModel> _possibleAvatars = new List<AvatarViewModel>
+            private List<AvatarViewModel> _possibleAvatars = new List<AvatarViewModel>
 {
-new AvatarViewModel { Name = "A cat", Url =
-"https://theoldreader.com/kittens/files/images/53133240@N00-5255106920/600x400.jpg" },
-new AvatarViewModel { Name = "Another cat", Url =
-"https://theoldreader.com/kittens/files/images/33423611@N00-6643985985/600x400.jpg" },
-new AvatarViewModel { Name = "Cat, cat, cat", Url =
-"https://theoldreader.com/kittens/files/images/27718315@N02-49627790451/600x400.jpg" },
-new AvatarViewModel { Name = "Blazorly", Url = "/blazorlyicon.png" },
-new AvatarViewModel { Name = "A better cat", Url =
-"https://theoldreader.com/kittens/files/images/27718315@N02-49627790451/600x400.jpg" },
+new AvatarViewModel { Name = "Herb", Url = "/avatars/herb.jpg" },
+new AvatarViewModel { Name = "Fox with a hat", Url = "/avatars/fox-with-hat.jpg" },
+new AvatarViewModel { Name = "Cookies", Url = "/avatars/cookie.jpg" },
+new AvatarViewModel { Name = "Flower", Url = "/avatars/flower.jpg" },
+new AvatarViewModel { Name = "Grumpy Cat", Url = "/avatars/grumpy-cat.jpg" },
+new AvatarViewModel { Name = "Mushroom", Url = "/avatars/mushroom.jpg" },
+new AvatarViewModel { Name = "Craw", Url = "/avatars/craw.jpg" },
 };
 
- private void StartAGame()
- {
-    GameSession session = new GameSession(_model);
+            private void StartAGame()
+            {
+                GameSession session = new GameSession(_model);
 
-    state.Session = session;
-    navManager.NavigateTo("/Game");
- }
+                state.Session = session;
+                navManager.NavigateTo("/Game");
+            }
 
 }
