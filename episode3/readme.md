@@ -1,6 +1,9 @@
 # Episode 03 - Dressing up
 
-The episode will air on Thursday, 04 Feb, 8 PM PST at [Twitch](https://www.twitch.tv/justthebenno).
+> Thanks for being with me in the second episode. It was not my best episode, but we have it finished. Thanks for your ongoing support. 
+
+Watch the teaser on [Youtube](https://youtu.be/yAfq5ZoBMBE). 
+
 
 ## Content
 
@@ -58,4 +61,4 @@ If you didn't enjoy the experience, think about the why and feel free to send me
 ## Media
 
 + [Slides](media/slides-episode-03.pdf)
-+ Recorded session on YouTube (added after recording)
++ [Recorded session on YouTube](https://youtu.be/RRdLLvoTgPA)
