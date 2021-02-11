@@ -1,0 +1,48 @@
+<div class="upper-footer">
+</div>
+<div class="footer background-dark-purple">
+    <div class="d-flex flex-row justify-content-center ">
+        @ChildContent
+    </div>
+    @if (ShowAvatars == true)
+    {
+        <div class="py-3 d-flex flex-row align-items-center">
+            <ul class="list-unstyled d-flex flex-fill flex-row justify-content-around">
+                @for (int i = 0; i < Players.Count; i++)
+                {
+                    PlayerViewModel item = Players[i];
+
+                    <li>
+                        <div class="d-flex flex-column align-items-center">
+                            @if (String.IsNullOrEmpty(item.AvatarUrl) == false)
+                            {
+                                <PlayerAvatar Player="item" IsActive="@(i == ActivePlayerIndex)" />
+                            }
+
+                            <p class="text-white text-center"> @item.Name </p>
+                            <p class="keyboard-key shadow-lg">
+                                @GameSession.PlayerKeys[i].ToUpper()
+                            </p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+@code {
+
+    [Parameter]
+    public Boolean ShowAvatars { get; set; } = true;
+
+    [Parameter]
+    public List<PlayerViewModel> Players { get; set; } = new();
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public Int32 ActivePlayerIndex { get; set; } = -1;
+
+
+}

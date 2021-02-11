@@ -1,0 +1,137 @@
+@page "/Game"
+@inject NavigationManager navManager
+
+@inject GameSessionState state
+
+
+@if (state.Session != null)
+{
+    <EditForm class="full-heigth" Model="_currentAnswer" OnValidSubmit="RevealAnswer">
+
+        <Header>
+              <ul class="list-unstyled d-flex flex-row justify-content-around">
+                @for (Int32 i = 0; i < _session.Questions.Count; i++)
+                {
+                    <li>
+                        @if (i >= _session.QuestionIndex)
+                        {
+                            <span>&#9898;</span>
+                        }
+                        else
+                        {
+                            if (_session.AnswerWasCorrect(i) == true)
+                            {
+                                <span>&#10004;</span>
+                            }
+                            else
+                            {
+                                <span> &#10006;</span>
+                            }
+                        }
+
+                    </li>
+                }
+            </ul>
+
+            <h1>Question @(_session.QuestionIndex+1): <br>
+                <small> @_session.GetCurrentQuestion().Text</small>
+            </h1>
+        </Header>
+        <ContentPage>
+            @{
+                Int32 optionIndex = 0;
+            }
+            <div class="answer-toolbar ">
+
+           
+            <InputRadioGroup @bind-Value="_currentAnswer.ChoosenIndex">
+                @foreach (String option in _session.GetCurrentQuestion().Options)
+                {
+            
+                    <InputRadio Value="optionIndex" class="form-check-input" id="@optionIndex" />
+                    <label class="form-check-label @SetOptionBackground(optionIndex) " for="@optionIndex">
+                      <strong>@(optionIndex  + 1) </strong>  @option
+                    </label>
+               
+                    optionIndex++;
+                }
+        </InputRadioGroup>
+         </div>
+      
+
+        </ContentPage>
+
+        <Footer Player="_session.Player">
+            @if (_showAnswers == false)
+            {
+                <button type="submit" class="btn btn-turquois">Answer</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-turquois" @onclick="MoveToNextQuestion">Next Question
+                </button>
+            }
+
+        </Footer>
+    </EditForm>
+}
+
+
+@code
+{
+    private GameSession _session;
+    private AnswerViewModel _currentAnswer = new AnswerViewModel();
+    protected override void OnInitialized()
+    {
+        if (state.Session == null)
+        {
+            navManager.NavigateTo("/");
+            return;
+        }
+        else
+        {
+            _session = state.Session;
+        }
+
+        base.OnInitialized();
+    }
+
+    private Boolean _showAnswers = false;
+
+    private String SetOptionBackground(Int32 option)
+    {
+        if (_showAnswers == false)
+        {
+            return String.Empty;
+        }
+
+        if (option == _session.GetCurrentQuestion().CorrectOptionIndex)
+        {
+            return "correct-option";
+        }
+        else
+        {
+            return String.Empty;
+        }
+    }
+
+    private void RevealAnswer()
+    {
+        _session.SubmitAnswer(_currentAnswer.ChoosenIndex);
+        _showAnswers = true;
+    }
+
+    private void MoveToNextQuestion()
+    {
+        Boolean isThereAnotherQuestion = _session.MoveToNextQuestion();
+        if (isThereAnotherQuestion == true)
+        {
+            _currentAnswer = new AnswerViewModel();
+            _showAnswers = false;
+        }
+        else
+        {
+            navManager.NavigateTo("/Results");
+        }
+    }
+}

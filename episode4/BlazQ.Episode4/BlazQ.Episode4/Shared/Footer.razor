@@ -1,0 +1,24 @@
+<div class="upper-footer">
+</div>
+<div class="footer background-dark-purple">
+    <div class="d-flex flex-row justify-content-center ">
+         @ChildContent
+    </div>
+    <div class="py-3 d-flex flex-column align-items-center">
+        @if (String.IsNullOrEmpty(Player.AvatarUrl) == false)
+        {
+            <PlayerAvatar Player="Player" />
+        
+        }
+        <span class="text-white"> @Player.Name </span>
+
+    </div>
+</div>
+@code {
+
+    [Parameter]
+    public PlayerViewModel Player {get; set;}
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

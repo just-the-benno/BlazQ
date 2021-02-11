@@ -1,0 +1,68 @@
+﻿@using System.Threading;
+@implements IDisposable
+
+<span class="countdown">
+    @SecondsLeft
+</span>
+
+@code {
+
+    private Timer _timer;
+
+    public Int32 SecondsLeft { get; set; }
+
+    private Int32 _durationInSeconds;
+
+    public async Task Start(Int32 durationInSeconds)
+    {
+        _durationInSeconds = durationInSeconds;
+        await Restart();
+    }
+
+    public async Task Restart()
+    {
+        SecondsLeft = _durationInSeconds;
+        await InvokeAsync(StateHasChanged);
+
+        _timer.Change(1000, 1000);
+    }
+
+
+    [Parameter]
+    public  EventCallback CountdownFinished { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        _timer = new Timer(TimerTick);
+    }
+
+    private async void TimerTick(Object notNeeded)
+    {
+        SecondsLeft -= 1;
+        await InvokeAsync(StateHasChanged);
+
+        if (SecondsLeft <= 0)
+        {
+            Stop();
+
+            await CountdownFinished.InvokeAsync();
+        }
+    }
+
+    public void Stop()
+    {
+        _timer.Change(Timeout.Infinite, Timeout.Infinite);
+    }
+
+    public void Continue()
+    {
+        _timer.Change(1000, 1000);
+    }
+
+    public void Dispose()
+    {
+        _timer.Dispose();
+    }
+}

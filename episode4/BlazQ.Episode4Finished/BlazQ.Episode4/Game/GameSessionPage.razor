@@ -1,0 +1,238 @@
+@page "/Game"
+@inject NavigationManager navManager
+
+@inject GameSessionState state
+
+
+
+@if (state.Session != null)
+{
+    <div class="full-heigth" @onkeyup="KeyPressed" tabindex="0">
+        <Header>
+            <ChildContent>
+                @*<ul class="list-unstyled d-flex flex-row justify-content-around">
+                        @for (Int32 i = 0; i < _session.Questions.Count; i++)
+                        {
+                            <li>
+                                @if (i >= _session.QuestionIndex)
+                                {
+                                    <span>&#9898;</span>
+                                }
+                                else
+                                {
+                                    if (_session.AnswerWasCorrect(i) == true)
+                                    {
+                                        <span>&#10004;</span>
+                                    }
+                                    else
+                                    {
+                                        <span> &#10006;</span>
+                                    }
+                                }
+
+                            </li>
+                        }
+                    </ul>*@
+
+                <h1>
+                    Question @(_session.QuestionIndex+1): <br>
+                    <small> @_session.GetCurrentQuestion().Text</small>
+                </h1>
+            </ChildContent>
+            <AdditionalContent>
+                <div class="d-flex flex-fill justify-content-end flex-column align-items-center" >
+                    <Countdown @ref="_countdown" CountdownFinished="CountdownFinished" />
+                </div>
+         
+            </AdditionalContent>
+        </Header>
+        <ContentPage>
+            @{
+                Int32 optionIndex = 0;
+            }
+            <div class="answer-toolbar">
+
+
+                @foreach (String option in _session.GetCurrentQuestion().Options)
+                {
+                    Int32 tempIndex = optionIndex;
+
+                    <button type="button" class="btn @GetOptionBackgroundClass(tempIndex) text-left pl-3" @onclick="() => AnswerSelected(tempIndex)">
+                        <strong class="mr-3">@(tempIndex + 1) </strong>  @option
+                    </button>
+
+                    optionIndex++;
+                }
+            </div>
+
+
+        </ContentPage>
+
+        <Footer Players="_session.Players" ActivePlayerIndex="_activePlayerIndex">
+            @if (_showAnswers == true)
+            {
+                <button type="button" class="btn btn-turquois" @onclick="MoveToNextQuestion">
+                    Next Question
+                </button>
+            }
+        </Footer>
+    </div>
+}
+
+
+@code
+{
+    private Countdown _countdown;
+
+    private EditContext _context;
+
+    private GameSession _session;
+    private AnswerViewModel _currentAnswer = new AnswerViewModel();
+    protected override void OnInitialized()
+    {
+        if (state.Session == null)
+        {
+            navManager.NavigateTo("/");
+            return;
+        }
+        else
+        {
+            _session = state.Session;
+        }
+
+        _context = new EditContext(_currentAnswer);
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender == true)
+        {
+            await _countdown.Start(30);
+        }
+    }
+
+    private Int32 _activePlayerIndex = -1;
+
+    private List<Int32> _wrongAnsweredQuestions = new List<int>();
+
+    private void AnswerSelected(Int32 optionIndex)
+    {
+        if (_wrongAnsweredQuestions.Contains(optionIndex) == true)
+        {
+            return;
+        }
+
+        if (_activePlayerIndex >= 0)
+        {
+            Boolean answerIsRight = _session.SubmitAnswer(_activePlayerIndex, optionIndex);
+
+            if (answerIsRight == true)
+            {
+                RevealAnswer();
+            }
+            else
+            {
+                _wrongAnsweredQuestions.Add(optionIndex);
+                _countdown.Continue();
+            }
+
+            if (_session.AllPlayersHaveAnswered() == true)
+            {
+                RevealAnswer();
+            }
+
+            _activePlayerIndex = -1;
+        }
+    }
+
+    private void CountdownFinished()
+    {
+        RevealAnswer();
+    }
+
+    private Boolean _showAnswers = false;
+
+    private String GetOptionBackgroundClass(Int32 option)
+    {
+        if (_showAnswers == true)
+        {
+            if (option == _session.GetCurrentQuestion().CorrectOptionIndex)
+            {
+                return "btn-success";
+            }
+            else
+            {
+                return "btn-default";
+            }
+        }
+        else
+        {
+            if (_wrongAnsweredQuestions.Contains(option) == true)
+            {
+                return "btn-danger";
+            }
+            else
+            {
+                return "btn-turquois";
+            }
+        }
+    }
+
+    private void RevealAnswer()
+    {
+        //_session.SubmitAnswer(_currentAnswer.ChoosenIndex);
+        _countdown.Stop();
+        _showAnswers = true;
+    }
+
+    private async void KeyPressed(KeyboardEventArgs args)
+    {
+        if (_activePlayerIndex < 0)
+        {
+            foreach (var item in GameSession.PlayerKeys)
+            {
+                if (item.Value == args.Key.ToLower())
+                {
+                    if (_session.PlayerHasAlreadyAnswered(item.Key) == false)
+                    {
+                        _activePlayerIndex = item.Key;
+                        _countdown.Stop();
+                        return;
+                    }
+                }
+            }
+
+            if (args.Code == "Enter" && _showAnswers == true)
+            {
+                await MoveToNextQuestion();
+            }
+        }
+        else
+        {
+            if (Int32.TryParse(args.Key, out Int32 parsedNumber) == true)
+            {
+                AnswerSelected(parsedNumber - 1);
+            }
+        }
+    }
+
+    private async Task MoveToNextQuestion()
+    {
+        Boolean isThereAnotherQuestion = _session.MoveToNextQuestion();
+        if (isThereAnotherQuestion == true)
+        {
+            _currentAnswer = new AnswerViewModel();
+            _showAnswers = false;
+            await _countdown.Restart();
+            _activePlayerIndex = -1;
+            _wrongAnsweredQuestions.Clear();
+        }
+        else
+        {
+            navManager.NavigateTo("/Results");
+        }
+    }
+}

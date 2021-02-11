@@ -1,0 +1,10 @@
+<img src="@Player.AvatarUrl" class="player-avatar @(IsActive == true ? "active" : String.Empty) " alt="...">
+
+@code {
+    [Parameter]
+    public PlayerViewModel Player { get; set; }
+
+    [Parameter]
+    public Boolean IsActive { get; set; }
+
+}
