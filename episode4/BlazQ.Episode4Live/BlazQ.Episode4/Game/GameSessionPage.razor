@@ -1,0 +1,169 @@
+@page "/Game"
+@inject NavigationManager navManager
+
+@inject GameSessionState state
+
+
+@if (state.Session != null)
+{
+    <div class="full-heigth" tabindex="0" @onkeyup="KeyPressed">
+
+        <Header>
+            <h1>Question @(_session.QuestionIndex+1): <br>
+                <small> @_session.GetCurrentQuestion().Text</small>
+            </h1>
+        </Header>
+        <ContentPage>
+            @{
+                Int32 optionIndex = 0;
+            }
+            <div class="answer-toolbar ">
+           
+        
+                @foreach (String option in _session.GetCurrentQuestion().Options)
+                {
+                    Int32 temp = optionIndex;
+
+                    <button type="button" class="btn @SetButtonBackground(temp)" @onclick="() => OpionSelected(temp)">
+                        <strong>@(optionIndex  + 1) </strong> 
+                        <span>    @option</span>
+                    </button>
+                  
+               
+                    optionIndex++;
+                }
+       
+         </div>
+      
+
+        </ContentPage>
+
+        <Footer Players="_session.Players" ActivePlayerIndex="_activePlayerIndex" >
+            @if (_showAnswers == true)
+            {
+                    <button type="button" class="btn btn-turquois" @onclick="MoveToNextQuestion">Next Question
+                </button>
+            }
+
+        </Footer>
+    </div>
+}
+
+
+@code
+{
+    private GameSession _session;
+    private AnswerViewModel _currentAnswer = new AnswerViewModel();
+    protected override void OnInitialized()
+    {
+        if (state.Session == null)
+        {
+            navManager.NavigateTo("/");
+            return;
+        }
+        else
+        {
+            _session = state.Session;
+        }
+
+        base.OnInitialized();
+    }
+
+    private Boolean _showAnswers = false;
+
+    private String SetButtonBackground(Int32 option)
+    {
+        if (_showAnswers == true)
+        {
+            if(option == _session.GetCurrentQuestion().CorrectOptionIndex)
+            {
+                return "btn-success";
+            }
+            else
+            {
+                return "btn-default";
+            }
+        }
+        else
+        {
+            if(_session.OptionHasAlreadyBeenChoosen(option) == true)
+            {
+                return "btn-danger";
+            }
+            else
+            {
+                return "btn-turquois";
+            }
+        }
+    }
+    private void MoveToNextQuestion()
+    {
+        Boolean isThereAnotherQuestion = _session.MoveToNextQuestion();
+        if (isThereAnotherQuestion == true)
+        {
+            _currentAnswer = new AnswerViewModel();
+            _showAnswers = false;
+        }
+        else
+        {
+            navManager.NavigateTo("/Results");
+        }
+    }
+
+    private Int32 _activePlayerIndex = -1;
+
+    private void KeyPressed(KeyboardEventArgs args)
+    {
+        if(args.Key == "Enter" && _showAnswers == true)
+        {
+            MoveToNextQuestion();
+            return;
+        }
+
+        if(_activePlayerIndex >= 0)
+        {
+            Int32 answerIndexPress;
+            if(Int32.TryParse(args.Key,out answerIndexPress) == true)
+            {
+                answerIndexPress -= 1;
+                OpionSelected(answerIndexPress);
+            }
+
+            return;
+        }
+
+        foreach (var item in GameSession.HotKeys)
+        {
+            if(item.Value == args.Key)
+            {
+                if(_session.PlayerHasAlreadyAnswerd(item.Key) == false)
+                {
+                    _activePlayerIndex = item.Key;
+                }
+            }
+        }
+    }
+
+    private void OpionSelected(Int32 optionIndex)
+    {
+        if(_activePlayerIndex < 0)
+        {
+            return;
+        }
+
+       Boolean answerIsCorrect  =  _session.SubmitAnswer(optionIndex,_activePlayerIndex);
+       if(answerIsCorrect == true)
+       {
+         _showAnswers = true;
+       }
+       else
+       {
+           if(_session.AllPlayersHaveAnswered() == true)
+           {
+               _showAnswers = true;
+           }
+       }
+
+         _activePlayerIndex = -1;
+    }
+}

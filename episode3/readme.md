@@ -1,6 +1,6 @@
 # Episode 03 - Dressing up
 
-> Thanks for being with me in the second episode. It was not my best episode, but we have it finished. Thanks for your ongoing support. 
+> Thanks for being with me in the third episode. It was not my best episode, but we have it finished. Thanks for your ongoing support. 
 
 Watch the teaser on [Youtube](https://youtu.be/yAfq5ZoBMBE). 
 

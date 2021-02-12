@@ -1,0 +1,8 @@
+<div class="d-flex flex-row flex-fill justify-content-center align-items-center my-5">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}
