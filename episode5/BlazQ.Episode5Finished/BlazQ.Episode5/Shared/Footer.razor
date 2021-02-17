@@ -1,0 +1,76 @@
+<div class="upper-footer">
+</div>
+<div class="footer background-dark-purple">
+    <div class="d-flex flex-row justify-content-center ">
+        @ChildContent
+    </div>
+    @if (Players != null)
+    {
+        <ul class="list-unstyled d-flex flex-row justify-content-around">
+
+            @{
+                Int32 playerIndex = 0;
+            }
+            @foreach (var player in Players)
+            {
+
+                <li class="@(playerIndex == ActivePlayerIndex == true ? "active-player" : String.Empty)">
+                    <div class="py-3 d-flex flex-row">
+                        <div class="d-flex flex-column align-items-center">
+                            @if (String.IsNullOrEmpty(player.AvatarUrl) == false)
+                            {
+                                <PlayerAvatar Player="player" />
+                            }
+
+                            <span class="text-white"> @player.Name </span>
+                            <span class="keyboard-key">@GameSession.HotKeys[playerIndex].ToUpper()</span>
+                        </div>
+                        @if(ShowPointPanel == true)
+                        {
+                        <div class="d-flex justify-content-center flex-column ml-3">
+                            <div class="d-flex flex-row">
+                                @if(player.TotalReliableWisdomJokerIsUsed == false)
+                                {
+                                    <button class="btn btn-light btn-joker" @onclick="TotalReliableWisdomJokerRequested" >
+                                        <i class="fas fa-balance-scale-right"></i>
+                                    </button>
+                                }
+                                @if(player.NailJokerIsUsed == false)
+                                {
+                                    <button class="btn  @(player.NailJokerIsActive == false ? "btn-light" : "btn-primary")  btn-joker ml-1"  @onclick="NailJokerRequested" >
+                                        <i class="fas fa-bolt"></i>
+                                    </button>
+                                }
+                            </div>
+                            <span class="points">@player.Points</span>
+                            <span class="multiplicator">x @player.Multiplicator</span>
+                        </div>
+                        }
+                    </div>
+
+                </li>
+                playerIndex++;
+            }
+        </ul>
+    }
+
+</div>
+@code {
+    [Parameter]
+    public List<Player> Players { get; set; }
+
+    [Parameter]
+    public Boolean ShowPointPanel {get; set;} = false;
+
+    [Parameter]
+    public EventCallback NailJokerRequested {get; set;}
+
+    [Parameter]
+    public EventCallback TotalReliableWisdomJokerRequested {get; set;}
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public Int32 ActivePlayerIndex { get; set; } = -1;
+}

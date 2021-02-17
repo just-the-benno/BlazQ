@@ -1,0 +1,14 @@
+
+
+
+
+<img src="@Player.AvatarUrl" class="player-avatar @(IsSelected == true ? "active" : String.Empty)"  alt="...">
+
+@code {
+    [Parameter]
+    public Player Player { get; set; }
+
+    [Parameter]
+    public Boolean IsSelected {get; set; }
+
+}
