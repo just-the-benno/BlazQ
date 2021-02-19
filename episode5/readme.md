@@ -1,6 +1,7 @@
 # Episode 04 - Couch Coop
 
-> The episode will air on Thursday, 18th February 2021, at 8 pm PST. Participate live on [Twitch](https://www.twitch.tv/justthebenno)
+> Thanks for being with me in the 4th episode. That was fun! Thank you very much guys for the engagement, even if it was very late for you. Blazor for the Win :) Thanks for your ongoing support. 
+
 
 Watch the teaser on [Youtube](https://youtu.be/q0IR-mOuSWQ). 
 
@@ -46,4 +47,4 @@ If you didn't enjoy the experience, think about the why and feel free to send me
 ## Media
 
 + [Slides](media/slides-episode-05.pdf)
-+ Recorded session on YouTube (not ready yet)
++ [Recorded session on YouTube](https://youtu.be/kwmf4v1heGE)
