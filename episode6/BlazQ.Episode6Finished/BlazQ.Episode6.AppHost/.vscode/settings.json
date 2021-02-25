@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin\\Release\\net5.0\\publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/b02736df-7cda-4368-851f-c5c4a7abc86b/resourceGroups/blazq/providers/Microsoft.Web/sites/blazq"
+}
