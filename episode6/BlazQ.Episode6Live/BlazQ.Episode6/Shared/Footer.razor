@@ -1,0 +1,79 @@
+<div class="upper-footer">
+</div>
+<div class="footer background-dark-purple">
+    <div class="d-flex flex-row justify-content-center ">
+        @ChildContent
+    </div>
+    @if (Players != null)
+    {
+        <ul class="list-unstyled d-flex flex-row justify-content-around">
+
+            @{
+                Int32 playerIndex = 0;
+            }
+            @foreach (var player in Players)
+            {
+
+                <li class="@(playerIndex == ActivePlayerIndex ? "active-player" : String.Empty)">
+                    <div class="d-flex flex-row">
+                        <div class="py-3 d-flex flex-column align-items-center">
+                            @if (String.IsNullOrEmpty(player.AvatarUrl) == false)
+                            {
+                                <PlayerAvatar Player="player" />
+                            }
+
+                            <span class="text-white"> @player.Name </span>
+                            <span class="keyboard-key">@GameSession.HotKeys[playerIndex].ToUpper()</span>
+                        </div>
+                        @if (ShowPointsPanel == true)
+                        {
+                            <div class="d-flex flex-row">
+                                <div class="ml-3 d-flex flex-column justify-content-center">
+                                    <span class="points">@player.Points</span>
+                                    <span class="multiplicator">x @player.Multiplier</span>
+                                </div>
+                                <div class="ml-1 d-flex flex-row align-items-center">
+                                    @if(player.HasUsedTotalReliableWisdomJoker == false)
+                                    {
+                                        <button class="btn btn-light btn-joker" @onclick="TotalReliableWisdomJokerRequested">
+                                                <i class="fas fa-balance-scale-left"></i>
+                                        </button>
+                                    }
+                                    @if(player.HasUsedNailJoker == false)
+                                    {
+                                        <button class="btn btn-joker @(player.NailJokerIsInUse == true ? "btn-primary" : "btn-light")" @onclick="NailJokerRequested">
+                                                <i class="fas fa-bolt"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                </li>
+                playerIndex++;
+            }
+        </ul>
+    }
+
+</div>
+@code {
+    [Parameter]
+    public List<Player> Players { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public Boolean ShowPointsPanel { get; set; } = true;
+
+    [Parameter]
+    public Int32 ActivePlayerIndex { get; set; } = -1;
+
+    [Parameter]
+    public EventCallback TotalReliableWisdomJokerRequested { get; set;}
+
+    [Parameter]
+    public EventCallback NailJokerRequested { get; set;}
+    
+}

@@ -1,6 +1,9 @@
 # Episode 06 - Going Live
 
-> The episode will air on Thursday, 27th February 2021, at 8 pm PST. Participate live on [Twitch](https://www.twitch.tv/justthebenno)
+> Thanks for being with me in the 6th episode. That was fun! Thank you very much, guys, for the engagement, even if it was very late for you.  The multiplayer part will be excellent too.
+> I'm looking forward to it.
+
+The result can be seen at [blazq.azurewebsites.net](https://blazq.azurewebsites.net)
 
 This time without a teaser
 
@@ -24,7 +27,7 @@ The recommended way is cloning the repository.
 git clone https://github.com/just-the-benno/BlazQ.git
 ```
 
-And navigate to the directory ```episode4/BlazQ.Episode6/BlazQ.Episode6```. Open this directory with VS code, and you are prepared. 
+And navigate to the directory ```episode6/BlazQ.Episode6/BlazQ.Episode6```. Open this directory with VS code, and you are prepared. 
 
 It is the content of episode 05 with some CSS classes to make the styling a little bit easier. 
 
@@ -46,5 +49,5 @@ If you didn't enjoy the experience, think about the why and feel free to send me
 
 ## Media
 
-+ [Slides](media/slides-episode-05.pdf)
-+ Recorded session on YouTube (not ready yet)
++ [Slides](media/slides-episode-06.pdf)
++ [Recorded session on YouTube](https://youtu.be/b3J8zm62O9s)

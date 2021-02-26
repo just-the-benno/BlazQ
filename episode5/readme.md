@@ -1,6 +1,6 @@
-# Episode 04 - Couch Coop
+# Episode 05 - Uprising of the Jokers
 
-> Thanks for being with me in the 4th episode. That was fun! Thank you very much guys for the engagement, even if it was very late for you. Blazor for the Win :) Thanks for your ongoing support. 
+> Thanks for being with me in the 5th episode. That was fun! Thank you very much guys for the engagement, even if it was very late for you. Blazor for the Win :) Thanks for your ongoing support. 
 
 
 Watch the teaser on [Youtube](https://youtu.be/q0IR-mOuSWQ). 
@@ -26,9 +26,9 @@ The recommended way is cloning the repository.
 git clone https://github.com/just-the-benno/BlazQ.git
 ```
 
-And navigate to the directory ```episode4/BlazQ.Episode4/BlazQ.Episode4```. Open this directory with VS code, and you are prepared. 
+And navigate to the directory ```episode5/BlazQ.Episode5/BlazQ.Episode5```. Open this directory with VS code, and you are prepared. 
 z
-It is the content of episode 03 with a little bit of clean-up code. Besides, to speed up the design process, there are some changes in the ```app.css`` with additional classes. 
+It is the content of episode 04 with a little bit of clean-up code. Besides, to speed up the design process, there are some changes in the ```app.css`` with additional classes. 
 
 ## Learning outcome
 

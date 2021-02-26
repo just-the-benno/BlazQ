@@ -50,11 +50,11 @@ Episodes will air on every **Thursday at 8 pm PST**.
 3. [Dressing up: Implementing the design](https://youtu.be/RRdLLvoTgPA)
 4. [Couch Coop: Adding multiple players that can play locally](https://youtu.be/LjQW9bt7TPo)
 5. [Uprising of the Jokers: Add more elements to the game](https://youtu.be/kwmf4v1heGE)
+6. [Go live: Finishing touches and deploy the application so that everyone in the world can use it](https://youtu.be/b3J8zm62O9s)
 
 ### Upcoming episodes
 
 Keep in mind that BlazQ is a work and progress and highly feedback-driven. The list of the planned episodes, it's very likely to change over time. I'll keep the list updated and edited it after reviewing the latest episode. 
-
 
 6. Go live: Finishing touches and deploy the application so that everyone in the world can use it
 7. Be seated in the lobby: FIrst step in the multiplayer domain

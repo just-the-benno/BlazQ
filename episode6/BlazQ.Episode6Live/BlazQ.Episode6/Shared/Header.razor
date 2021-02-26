@@ -1,0 +1,25 @@
+<div class="upper-header">
+</div>
+<div class="row background-dark-purple p-4">
+  <div class="col-12 col-md-4 d-flex justify-content-center">
+    <img class="img-fluid" src="blazorlyicon.png" style="height: 150px;">
+  </div>
+  <div class="col-12 col-md-8 text-white d-flex flex-column justify-content-center">
+    @ChildContent
+  </div>
+</div>
+<div class="lower-header-container">
+  <div class="lower-header">
+  </div>
+  @AdditionalContent
+</div>
+
+
+
+@code {
+  [Parameter]
+  public RenderFragment ChildContent { get; set; }
+
+  [Parameter]
+  public RenderFragment AdditionalContent { get; set; }
+}
