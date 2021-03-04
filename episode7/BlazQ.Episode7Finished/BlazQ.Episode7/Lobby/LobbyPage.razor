@@ -1,0 +1,195 @@
+﻿@page "/lobby"
+@inject GameSessionState state
+@inject NavigationManager navManager
+@inject HttpClient client
+@implements IAsyncDisposable
+
+@using Microsoft.AspNetCore.SignalR.Client
+
+@if (state.Session != null)
+{
+    <Header>
+        <h1>
+            Welcome to your BlazQ Lobby <br>
+        </h1>
+    </Header>
+
+    <ContentPage>
+        <Card>
+            <Header>
+                Active Player
+            </Header>
+            <Body>
+                <div class="d-flex flex-column">
+                    @foreach (var item in _players)
+                    {
+                        <div class="d-flex flex-c">
+                            <img src="@item.AvatarUrl" class="player-avatar" />
+                            <span>@item.Name</span>
+                            <button class="btn btn-joker btn-primary" @onclick="@(() => JoinPlayerLobby(item.Id))">
+                                <i class="fas fa-door-open"></i>
+                            </button>
+                        </div>
+                    }
+                </div>
+            </Body>
+        </Card>
+
+        <Card>
+            <Header>
+                Player in my lobby
+                <button class="btn btn-joker btn-primary" @onclick="@LeaveLobby">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </Header>
+            <Body>
+                <div class="d-flex flex-column">
+                    @foreach (var item in _playersInMyLobby)
+                    {
+                        <div class="d-flex flex-c">
+                            <img src="@item.AvatarUrl" class="player-avatar" />
+                            <span>@item.Name</span>
+                        </div>
+                    }
+                </div>
+            </Body>
+        </Card>
+    </ContentPage>
+
+    <Footer Players="_session.Players" ShowPointsPanel="false">
+    </Footer>
+}
+
+@code {
+
+    private GameSession _session;
+    private List<ServerSidePlayerOverview> _players = new();
+    private List<ServerSidePlayerOverview> _playersInMyLobby = new();
+
+    private HubConnection hubConnection;
+
+    private Guid _currentLobbyId;
+
+    protected override void OnInitialized()
+    {
+        if (state.Session == null)
+        {
+            navManager.NavigateTo("/");
+            return;
+        }
+        else
+        {
+            _session = state.Session;
+        }
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (_session == null) { return; }
+
+        var createResponse = await client.PostAsJsonAsync("/api/Lobby/Player/", new CreatePlayerRequest
+        {
+            AvatarUrl = _session.FirstPlayer.AvatarUrl,
+            Id = _session.FirstPlayer.Id,
+            Name = _session.FirstPlayer.Name,
+        });
+
+        if (createResponse.IsSuccessStatusCode == true)
+        {
+            var response = await createResponse.Content.ReadFromJsonAsync<AddPlayerResponse>();
+            _currentLobbyId = response.LobbyId;
+
+            _players = await client.GetFromJsonAsync<List<ServerSidePlayerOverview>>("/api/Lobby/Players/");
+            var self = _players.FirstOrDefault(x => x.Id == _session.FirstPlayer.Id);
+            if (self != null)
+            {
+                _players.Remove(self);
+
+                _playersInMyLobby.Add(self);
+            }
+
+            hubConnection = new HubConnectionBuilder()
+            .WithUrl(navManager.ToAbsoluteUri("/lobby"))
+            .Build();
+
+            hubConnection.On<ServerSidePlayerOverview>(nameof(ILobbyClient.NewPlayer), AddNewPlayer);
+            hubConnection.On<ServerSidePlayerOverview>(nameof(ILobbyClient.PlayerJoinedLobby), AddNewPlayerToLobby);
+            hubConnection.On<Guid>(nameof(ILobbyClient.PlayerLeavedLobby), RemovePlayerFromLobby);
+
+
+            await hubConnection.StartAsync();
+            await hubConnection.SendAsync("JoinLobby", _currentLobbyId);
+        }
+    }
+
+    private void AddNewPlayer(ServerSidePlayerOverview player)
+    {
+        _players.Add(player);
+        StateHasChanged();
+    }
+
+    private void AddNewPlayerToLobby(ServerSidePlayerOverview player)
+    {
+        _playersInMyLobby.Add(player);
+        StateHasChanged();
+    }
+
+    private void RemovePlayerFromLobby(Guid id)
+    {
+        var player = _playersInMyLobby.FirstOrDefault(x => x.Id == id);
+        if(player != null)
+        {
+            _playersInMyLobby.Remove(player);
+            StateHasChanged();
+        }
+    }
+
+    private async Task JoinPlayerLobby(Guid hostId)
+    {
+        var responseMessage = await client.PostAsJsonAsync("/api/Lobby/Join", new ServerSideJoinLobbyRequest
+        {
+            HostId = hostId,
+            PlayerId = _session.FirstPlayer.Id,
+        });
+
+        if (responseMessage.IsSuccessStatusCode)
+        {
+            var response = await responseMessage.Content.ReadFromJsonAsync<JoinLobbyResponse>();
+            await MoveLobby(response);
+        }
+    }
+
+    private async Task MoveLobby(JoinLobbyResponse response)
+    {
+        _playersInMyLobby = response.PlayersInLobby;
+        await hubConnection.SendAsync("LeaveLobby", _currentLobbyId);
+        _currentLobbyId = response.LobbyId;
+        await hubConnection.SendAsync("JoinLobby", _currentLobbyId);
+    }
+
+    private async Task LeaveLobby()
+    {
+        var responseMessage = await client.PostAsJsonAsync("/api/Lobby/Leave", new ServerSideLeaveLobbyRequest
+        {
+            PlayerId = _session.FirstPlayer.Id,
+        });
+
+        if (responseMessage.IsSuccessStatusCode)
+        {
+            var response = await responseMessage.Content.ReadFromJsonAsync<JoinLobbyResponse>();
+            await MoveLobby(response);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await hubConnection.DisposeAsync();
+    }
+
+
+
+}

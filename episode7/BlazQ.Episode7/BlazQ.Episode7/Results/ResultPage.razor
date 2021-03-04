@@ -1,0 +1,111 @@
+@page "/Results"
+@using Game
+@inject NavigationManager navManager
+@inject GameSessionState state
+
+@if (state.Session != null)
+{
+
+    <Header>
+
+        <h1 class="text-md-left"> &#127881; Congrats &#127874; </h1>
+        <div class="d-flex flex-row justify-content-center justify-content-md-start">
+            <div class="mr-3">
+                <p><span class="text-success"> &#10004; </span> @_bestReport.CorrectAnswers </p>
+                <p><span class="text-danger"> &#10006; </span> @_bestReport.WrongAnswers </p>
+            </div>
+            <div class="d-flex flex-column justify-content-center" style="width: 150px">
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar"
+                        style="width: @_bestReport.PercentageOfCorrectAnswer%" aria-valuenow="25" aria-valuemin="0"
+                        aria-valuemax="100">@_bestReport.PercentageOfCorrectAnswer%</div>
+                </div>
+            </div>
+        </div>
+    </Header>
+    <ContentPage>
+        <Card>
+            <Header>
+                Results
+            </Header>
+
+            <Body>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Player</th>
+                            <th>Points</th>
+                            <th>Percentage</th>
+                            <th>Correct</th>
+                            <th>Wrong</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ Int32 index = 0; }
+                        @foreach (var item in _sortedReports)
+                        {
+                            <tr>
+                                <td>
+                                    <PlayerAvatar Player="item.Player" IsSelected="index == 0" />
+                                </td>
+                                <td>@item.Player.Points %</td>
+                                <td>@item.PercentageOfCorrectAnswer %</td>
+                                <td>@item.CorrectAnswers</td>
+                                <td>@item.WrongAnswers</td>
+                            </tr>
+
+                            index++;
+                        }
+                    </tbody>
+                </table>
+        </Body>
+    </Card>
+</ContentPage>
+
+    <Footer>
+        <button type="button" class="btn btn-turquois" @onclick="RestartSession">Try it again</button>
+        <button type="button" class="btn btn-secondary" @onclick="RestartGame">Play as another
+            player</button>
+    </Footer>
+}
+
+
+@code
+{
+    private GameSession _session;
+
+    private GameSessionReportViewModel _bestReport;
+
+    private IEnumerable<GameSessionReportViewModel> _sortedReports;
+
+    protected override void OnInitialized()
+    {
+        if (state.Session == null)
+        {
+            navManager.NavigateTo("/");
+            return;
+        }
+        else
+        {
+            _session = state.Session;
+
+            _sortedReports = state.Session.Reports.OrderByDescending(x => x.Player.Points);
+            _bestReport = _sortedReports.First();
+
+        }
+
+        base.OnInitialized();
+    }
+
+    private void RestartSession()
+    {
+        _session.Restart();
+        navManager.NavigateTo("/Game");
+    }
+
+    private void RestartGame()
+    {
+        state.Session = null;
+        navManager.NavigateTo("/");
+    }
+}

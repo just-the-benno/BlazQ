@@ -1,0 +1,63 @@
+@using System.Threading
+@implements IDisposable
+
+<span class="countdown">
+    @_value
+</span>
+
+@code {
+    private Int32 _value;
+
+    private Int32 _initalValue;
+
+
+    [Parameter]
+    public EventCallback CountdownFinished { get; set; }
+
+    private Timer _timer;
+
+    private async void TimerHasTicked(Object unused)
+    {
+        _value--;
+        await InvokeAsync(StateHasChanged);
+
+        if (_value == 0)
+        {
+            Freeze();
+            await CountdownFinished.InvokeAsync();
+        }
+    }
+
+    public void Freeze()
+    {
+        _timer.Change(Timeout.Infinite, Timeout.Infinite);
+    }
+
+    public void Unfreeze()
+    {
+        _timer.Change(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+    }
+
+    public void Reset()
+    {
+        _value = _initalValue;
+        Unfreeze();
+    }
+
+    public async void Start(Int32 seconds)
+    {
+        _timer = new Timer(TimerHasTicked, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+        _initalValue = seconds;
+        _value = _initalValue;
+
+        await InvokeAsync(StateHasChanged);
+        
+        Reset();
+    }
+
+    public void Dispose()
+    {
+        Freeze();
+        _timer.Dispose();
+    }
+}
