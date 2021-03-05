@@ -27,7 +27,7 @@
                             <img src="@item.AvatarUrl" class="player-avatar" />
                             <span>@item.Name</span>
                             <button class="btn btn-joker btn-primary" @onclick="@(() => JoinPlayerLobby(item.Id))">
-                                <i class="fas fa-door-open"></i>
+                                <i class="fas fa-sign-out-alt"></i>
                             </button>
                         </div>
                     }
@@ -39,7 +39,7 @@
             <Header>
                 Player in my lobby
                 <button class="btn btn-joker btn-primary" @onclick="@LeaveLobby">
-                    <i class="fas fa-sign-out-alt"></i>
+                    <i class="fas fa-door-open"></i>
                 </button>
             </Header>
             <Body>
