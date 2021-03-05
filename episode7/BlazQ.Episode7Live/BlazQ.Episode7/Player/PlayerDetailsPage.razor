@@ -1,0 +1,72 @@
+@page "/"
+@using Game
+@inject NavigationManager navManager
+@inject GameSessionState state
+
+<EditForm Model="_model" class="full-heigth" OnValidSubmit="StartLobby">
+
+  <Header>
+    <h1>Welcome to BlazQ <br>
+      <small> # The new quiz in town</small>
+    </h1>
+  </Header>
+
+  <ContentPage>
+    <Card>
+      <Header>
+        Create your profile
+      </Header>
+
+      <Body>
+        <DataAnnotationsValidator />
+        <div class="form-group">
+          <label for="name">You Playername</label>
+          <InputText @bind-Value="_model.Name" class="form-control" id="name" />
+          <ValidationMessage For="@(() => _model.Name)" />
+        </div>
+        <div class="form-group">
+          <label for="avatar">Choose your Avatar</label>
+          <InputSelect @bind-Value="_model.AvatarUrl" class="form-control" id="Example">
+            <option value="">--- Select your avatar ---</option>
+            @foreach (AvatarViewModel avatar in _possibleAvatars)
+                          {
+                        <option value="@avatar.Url">@avatar.Name</option>
+            }
+                    </InputSelect>
+                  </div>
+                  <button type="submit" class="btn btn-turquois">Joining the lobby</button>
+                </Body>
+              </Card>
+            </ContentPage>
+
+            <Footer ShowPointsPanel="false"></Footer>
+          </EditForm>
+          @code {
+  private CreatePlayerViewModel _model = new CreatePlayerViewModel();
+
+  private List<AvatarViewModel> _possibleAvatars = new List<AvatarViewModel>
+{
+new AvatarViewModel { Name = "Herb", Url = "/avatars/herb.jpg" },
+new AvatarViewModel { Name = "Fox with a hat", Url = "/avatars/fox-with-hat.jpg" },
+new AvatarViewModel { Name = "Cookies", Url = "/avatars/cookie.jpg" },
+new AvatarViewModel { Name = "Flower", Url = "/avatars/flower.jpg" },
+new AvatarViewModel { Name = "Grumpy Cat", Url = "/avatars/grumpy-cat.jpg" },
+new AvatarViewModel { Name = "Mushroom", Url = "/avatars/mushroom.jpg" },
+new AvatarViewModel { Name = "Craw", Url = "/avatars/craw.jpg" },
+};
+  public PlayerDetailsPage()
+  {
+  }
+
+  private void StartLobby()
+  {
+    Player player = new Player(_model.Name,_model.AvatarUrl);
+    List<Player> notReallyUsedAnymore = new();
+    notReallyUsedAnymore.Add(player);
+
+    GameSession session = new GameSession(notReallyUsedAnymore);
+    state.Session = session;
+    navManager.NavigateTo("/Lobby");
+  }
+
+}

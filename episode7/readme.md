@@ -1,6 +1,7 @@
 # Episode 07 - Be seated in the Lobby
 
-> The episode will air on Thursday, 04th March 2021, at 8 pm PST. Participate live on [Twitch](https://www.twitch.tv/justthebenno)
+> Thanks for being with me in the 6th episode. That was fun and we could see the magic of bidrectional communcation.
+> We haven't managed do to everything as planned. But I'll update the solution for the next show
 
 For a live demo, visit the demo site at [blazq.azurewebsites.net](https://blazq.azurewebsites.net)
 
@@ -55,5 +56,5 @@ If you didn't enjoy the experience, think about the why and feel free to send me
 
 ## Media
 
-+ [Slides](media/slides-episode-06.pdf)
-+ Recorded session on YouTube (not ready yet)
++ [Slides](media/slides-episode-07.pdf)
++ [Recorded session on YouTube](https://youtu.be/JeMsdKDA5zg)
