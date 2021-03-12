@@ -58,11 +58,10 @@ Episodes will air on every **Thursday at 8 pm PST**.
 
 Keep in mind that BlazQ is a work and progress and highly feedback-driven. The list of the planned episodes, it's very likely to change over time. I'll keep the list updated and edited it after reviewing the latest episode. 
 
-8. Be seated in the lobby: FIrst step in the multiplayer domain
-9. BlazQ goes Multiplayer: Adding the mechanics for the multiplayer option
-10. The hall of knowledge: Persisting a high score and more
-11. This is my lobby: Introducing authentication and privacy into BlazQ
-12. \[Outro] Ain't no sunshine when it's gone: The careers as a software developer
+8. BlazQ goes Multiplayer: Adding the mechanics for the multiplayer option
+9. The hall of knowledge: Persisting a high score and more
+10. This is my lobby: Introducing authentication and privacy into BlazQ
+11. \[Outro] Ain't no sunshine when it's gone: The careers as a software developer
 
 ## Feedback driven
 
