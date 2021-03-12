@@ -1,0 +1,320 @@
+@page "/Game"
+@inject NavigationManager navManager
+
+@inject GameSessionState state
+
+@implements IAsyncDisposable
+
+@using Microsoft.AspNetCore.SignalR.Client
+
+@if (state.Session != null)
+{
+    <div class="full-heigth" tabindex="0" @onkeyup="KeyPressed">
+        <Header>
+            <ChildContent>
+            <h1>Question @(_session.QuestionIndex+1): <br>
+                <small> @_session.GetCurrentQuestion().Text</small>
+            </h1>
+            </ChildContent>
+            <AdditionalContent>
+                <div class="d-flex flex-fill flex-column align-items-center">
+                   <Coutdown @ref="_countdown" CountdownFinished="TimerElapsed" />
+                </div>
+            </AdditionalContent>
+        </Header>
+        <ContentPage>
+            @{
+                Int32 optionIndex = 0;
+            }
+            <div class="answer-toolbar ">
+           
+        
+                @foreach (String option in _session.GetCurrentQuestion().Options)
+                {
+                    Int32 temp = optionIndex;
+
+                    <button type="button" class="btn @SetButtonBackground(temp)" @onclick="() => OptionSelected(temp)">
+                        <strong>@(optionIndex  + 1) </strong> 
+                        <span>    @option</span>
+                    </button>
+                  
+               
+                    optionIndex++;
+                }
+       
+         </div>
+      
+
+        </ContentPage>
+
+        <Footer Players="_session.Players" 
+        ActivePlayerIndex="_activePlayerIndex" 
+        TotalReliableWisdomJokerRequested="TotalReliableWisdomJokerRequested"
+        NailJokerRequested="NailJokerRequested"
+         >
+            @if (_showAnswers == true)
+            {
+                    <button type="button" class="btn btn-turquois" @onclick="@( () => MoveToNextQuestion(false))">Next Question
+                </button>
+            }
+
+        </Footer>
+    </div>
+}
+
+
+@code
+{
+    private Coutdown _countdown; 
+    
+    private HubConnection hubConnection;
+
+    private GameSession _session;
+    private AnswerViewModel _currentAnswer = new AnswerViewModel();
+    protected override void OnInitialized()
+    {
+        if (state.Session == null)
+        {
+            navManager.NavigateTo("/");
+            return;
+        }
+        else
+        {
+            _session = state.Session;
+        }
+
+        base.OnInitialized();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (_session == null) { return; }
+
+            hubConnection = new HubConnectionBuilder()
+            .WithUrl(navManager.ToAbsoluteUri("/lobby"))
+            .Build();
+
+            hubConnection.On<KeyPressedResponse>(nameof(ILobbyClient.KeyPressedReceived), KeyPressedResponseHandled);
+
+            await hubConnection.StartAsync();
+            await hubConnection.SendAsync("JoinLobby", _session.SessionId);
+    }
+
+         protected override void OnAfterRender(bool firstRender)
+        {
+            base.OnAfterRender(firstRender);
+
+            if(firstRender == true)
+            {
+                _countdown.Start(30);
+            }
+        }
+        
+    private Boolean _showAnswers = false;
+
+    private String SetButtonBackground(Int32 option)
+    {
+        if (_showAnswers == true)
+        {
+            if(option == _session.GetCurrentQuestion().CorrectOptionIndex)
+            {
+                return "btn-success";
+            }
+            else
+            {
+                return "btn-default";
+            }
+        }
+        else
+        {
+            if(_session.OptionHasAlreadyBeenChoosen(option) == true)
+            {
+                return "btn-danger";
+            }
+            else
+            {
+                return "btn-turquois";
+            }
+        }
+    }
+    private async void MoveToNextQuestion(Boolean keyPressed)
+    {
+        if(keyPressed == false)
+        {
+            await KeyPressed("Enter");
+            return;
+        }
+
+        Boolean isThereAnotherQuestion = _session.MoveToNextQuestion();
+        if (isThereAnotherQuestion == true)
+        {
+            _currentAnswer = new AnswerViewModel();
+            _showAnswers = false;
+            _countdown.Reset();
+        }
+        else
+        {
+            navManager.NavigateTo("/Results");
+        }
+    }
+    private async Task KeyPressed(KeyboardEventArgs args)
+    {
+        Boolean sendKey = true;
+        foreach (var item in GameSession.HotKeys)
+        {
+            if(item.Value == args.Key)
+            {
+                if(_session.IsCurrentPlayer(item.Key) == false)
+                {
+                    sendKey = false;
+                }
+            }
+        }
+
+        if(sendKey == true)
+        {
+            await KeyPressed(args.Key);
+        }
+    }
+
+    private async Task KeyPressed(String key)
+    {
+        await hubConnection.SendAsync("KeyPressed",key, _session.SessionId);
+    }
+
+    private Int32 _activePlayerIndex = -1;
+
+    private async Task KeyPressedResponseHandled(KeyPressedResponse response)
+    {
+        HandleKeyPressed(response);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void HandleKeyPressed(KeyPressedResponse response)
+    {
+        if(response.Key == "Enter" && _showAnswers == true)
+        {
+            MoveToNextQuestion(true);
+            return;
+        }
+
+        if(_showAnswers == true)
+        {
+            return;
+        }
+
+        if(_activePlayerIndex >= 0)
+        {
+            Int32 indexPressed;
+            if(Int32.TryParse(response.Key,out indexPressed) == true)
+            {
+                indexPressed -= 1;
+                if(_nailJokerRequested == false)
+                {
+                    OptionSelected(indexPressed);
+                }
+                else 
+                {
+                    if(_activePlayerIndex == indexPressed)
+                    {
+                        return;
+                    }
+
+                    _session.LinkNailerToNailee(_activePlayerIndex,indexPressed);
+                    _activePlayerIndex = indexPressed;
+                    _nailJokerRequested = false;
+                    return;
+                }
+            }
+            else
+            {
+                if(response.Key == "t" || response.Key == "r")
+                {
+                    TotalReliableWisdomJokerRequested();
+                }
+                else if(response.Key == "n")
+                {
+                    NailJokerRequested();
+                }
+            }
+
+            return;
+        }
+
+        foreach (var item in GameSession.HotKeys)
+        {
+            if(item.Value == response.Key)
+            {
+                if(_session.PlayerHasAlreadyAnswerd(item.Key) == false)
+                {
+                    _activePlayerIndex = item.Key;
+                    _countdown.Freeze();
+                }
+            }
+        }
+    }
+
+    private void OptionSelected(Int32 optionIndex)
+    {
+        if(_activePlayerIndex < 0)
+        {
+            return;
+        }
+
+       Boolean answerIsCorrect  =  _session.SubmitAnswer(optionIndex,_activePlayerIndex);
+       if(answerIsCorrect == true)
+       {
+         _showAnswers = true;
+       }
+       else
+       {
+           if(_session.AllPlayersHaveAnswered() == true)
+           {
+               _showAnswers = true;
+           }
+           else
+           {
+               _countdown.Unfreeze();
+           }
+       }
+
+         _activePlayerIndex = -1;
+    }
+
+    private void TotalReliableWisdomJokerRequested()
+    {
+        if(_activePlayerIndex >= 0)
+        {
+            if(_session.PlayerHasUsedTotalReliableWisdomJoker(_activePlayerIndex) == false)
+            {
+                   Int32 choosenOption = _session.GetAnswerFromTotalReliableWisdomJoker(_activePlayerIndex);
+                    OptionSelected(choosenOption);
+            }
+        }
+    }
+
+    private Boolean _nailJokerRequested = false;
+    private void NailJokerRequested()
+    {
+          if(_activePlayerIndex >= 0)
+        {
+            if(_session.PlayerHasUsedNailJoker(_activePlayerIndex) == false)
+            {
+                _session.PlayerReqiuestedNailJoker(_activePlayerIndex);
+                _nailJokerRequested = true;
+            }
+        }
+    }
+    private void TimerElapsed()
+    {
+        _showAnswers = true;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await hubConnection.SendAsync("LeaveLobby", _session.SessionId);
+        await hubConnection.DisposeAsync();
+    }
+}

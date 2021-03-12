@@ -1,6 +1,7 @@
 # Episode 08 - BlazQ goes Multiplayer
 
-> The episode will air on Thursday, 11th March 2021, at 8 pm PST. Participate live on [Twitch](https://www.twitch.tv/justthebenno)
+
+> Thanks for being with me in the 8th episode. I'm so sorry for the wrong content half of the episode.
 
 For a live demo, visit the demo site at [blazq.azurewebsites.net](https://blazq.azurewebsites.net)
 
@@ -51,5 +52,5 @@ If you didn't enjoy the experience, think about the why and feel free to send me
 
 ## Media
 
-+ [Slides](media/slides-episode-06.pdf)
-+ Recorded session on YouTube (not ready yet)
++ [Slides](media/slides-episode-08.pdf)
++ [Recorded session on YouTube](https://youtu.be/-Bjsj6hUhyM)
